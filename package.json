@@ -28,5 +28,7 @@
     "dotenv": "^5.0.1",
     "inquirer": "^5.2.0",
     "watson-developer-cloud": "^3.3.0"
-  }
+  },
+  "preferGlobal": true,
+  "bin": "./index.js"
 }
