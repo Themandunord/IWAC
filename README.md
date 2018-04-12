@@ -1,3 +1,5 @@
+![IWAC](https://github.com/Themandunord/ibm-watson-assistant-creator/blob/master/img/iwak.PNG?raw=true)
+
 # IWAC
 
 > Command line tool to create Watson Assistant Workspaces
@@ -14,6 +16,7 @@ $ npm i iwac -g
 
 ```js
 iwac --help
+iwac create (alias c)
 ```
 
 ## Contributing
@@ -24,8 +27,8 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 
 **Themandunord**
 
-* [github/](https://github.com/)
-* [twitter/](http://twitter.com/)
+* [github/](https://github.com/Themandunord)
+* [twitter/](https://twitter.com/lespagnolr)
 
 ## License
 
