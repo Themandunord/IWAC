@@ -1,4 +1,4 @@
-![IWAC](https://github.com/Themandunord/ibm-watson-assistant-creator/blob/master/img/iwak.PNG?raw=true)
+![IWAC](https://github.com/Themandunord/IWAC/blob/master/img/iwak.PNG?raw=true)
 
 # IWAC
 
