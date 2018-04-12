@@ -1,0 +1,1 @@
+const creator = require('./src/creator');
