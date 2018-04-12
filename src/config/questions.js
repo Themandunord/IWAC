@@ -12,7 +12,6 @@ module.exports = [
         validate: function (input) {
             return input && input.length > 0;
         },
-        default: '77efea60-a92e-4a7c-979c-7ae4af3f0042'
     },
     {
         type: 'input',
@@ -21,7 +20,6 @@ module.exports = [
         validate: function (input) {
             return input && input.length > 0;
         },
-        default: 'BkANQkhV6z5P'
     },
     {
         type: 'checkbox',
