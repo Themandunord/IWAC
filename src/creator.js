@@ -17,6 +17,7 @@ program
 program
     .command('create')
     .alias('c')
+    .description('Create Watson Assistant Workspaces')
     .action(async () => {
         try {
             const answers = await prompt(questions);
