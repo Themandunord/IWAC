@@ -1,6 +1,6 @@
 {
   "name": "iwac",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Command line tool to create Watson Assistant Workspaces",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Themandunord/ibm-watson-assistant-creator.git"
+    "url": "git+https://github.com/Themandunord/IWAC.git"
   },
   "keywords": [
     "watson",
@@ -20,9 +20,9 @@
   "author": "Themandunord",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Themandunord/ibm-watson-assistant-creator/issues"
+    "url": "https://github.com/Themandunord/IWAC/issues"
   },
-  "homepage": "https://github.com/Themandunord/ibm-watson-assistant-creator#readme",
+  "homepage": "https://github.com/Themandunord/IWAC#readme",
   "dependencies": {
     "commander": "^2.15.1",
     "dotenv": "^5.0.1",

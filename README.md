@@ -21,7 +21,7 @@ iwac create (alias c)
 
 ## Contributing
 
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/Themandunord/ibm-watson-assistant-creator/issues)
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/Themandunord/IWAC/issues)
 
 ## Author
 
