@@ -20,22 +20,24 @@ async function createWorkspaces({
         version
     });
 
-
-
-    // await Promise.all(workspaces.map(async (wks) => {
-    //     console.log(wks)
-    //     await createWorkspace({
-    //         assistant,
-    //         name: wks.name,
-    //         description: wks.description || '',
-    //         language: wks.language || 'en'
-    //     })
-    // }));
+    await Promise.all(workspaces.map(async (wks) => {
+        console.log(wks)
+        try{
+            await createWorkspace({
+                assistant,
+                name: wks.name,
+                description: wks.description || '',
+                language: wks.language || 'en'
+            })
+        }catch(err){
+            console.err(err)
+        }
+    }));
 }
 
-async function createWorkspace({ assistant, name, description}) {
+async function createWorkspace({ assistant, name, description, language}) {
     return new Promise((resolve, reject) => {
-        const workspace = { name, description };
+        const workspace = { name, description, language};
 
         assistant.createWorkspace(workspace, function (err, response) {
             if (err) {
