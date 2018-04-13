@@ -1,6 +1,6 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
-const { createWorkspaces } = require('./watson');
+const { createWorkspaces, deleteWorkspaces } = require('./watson');
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
 
@@ -20,7 +20,7 @@ program
     .description('Create Watson Assistant Workspaces')
     .action(async () => {
         try {
-            const answers = await prompt(questions);
+            const answers = await prompt(questions.create);
             const _langs = answers.languages.map(l => lang[l]);
             const wks = workspaces.filter(w => _langs.includes(w.language) && answers.types.includes(w.type));
             await createWorkspaces({
@@ -35,6 +35,25 @@ program
             console.error(err);
         }
     });
+   
+program
+    .command('delete')
+    .alias('d')
+    .description('Delete all Watson Assistant Workspaces')   
+    .action(async () => {
+        const answers = await prompt(questions.delete);
+        try {
+            await deleteWorkspaces({
+                url: answers.url,
+                username: answers.username,
+                password: answers.password,
+            });
+            console.log('Your workspaces were successfully deleted :)')
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }); 
 
 program.parse(process.argv);
 
