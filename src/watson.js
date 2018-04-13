@@ -70,7 +70,7 @@ async function createWorkspace({ assistant, name, description, language }) {
                 console.error(err);
                 return reject(err);
             } else {
-                //console.log(JSON.stringify(response, null, 2));
+                console.log(JSON.stringify(response, null, 2));
                 return resolve(response);
             }
         });
