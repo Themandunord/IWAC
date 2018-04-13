@@ -12,11 +12,14 @@ Install with [npm](https://www.npmjs.com/)
 $ npm i iwac -g
 ```
 
+> Keep in my that Watson Assistant have a Rate Limit of 30 requests every 30 Minutes
+
 ## Usage
 
 ```js
 iwac --help
 iwac create (alias c)
+iwac delete (alias d)
 ```
 
 ## Contributing
