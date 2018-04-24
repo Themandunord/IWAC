@@ -3,90 +3,105 @@ module.exports = [
         name: 'business-fr',
         type: 'Business',
         language: 'fr',
-        description: 'Business French'
+        description: 'Business French',
+        varName: 'COGNITIVE_PROVIDER_WATSON_WORKSPACE_FR'
     },
     {
         name: 'business-en',
         type: 'Business',
         language: 'en',
-        description: 'Business English'
+        description: 'Business English',
+        varName: 'COGNITIVE_PROVIDER_WATSON_WORKSPACE_EN'
     },
     {
         name: 'business-de',
         type: 'Business',
         language: 'de',
-        description: 'Business German'
+        description: 'Business German',
+        varName: 'COGNITIVE_PROVIDER_WATSON_WORKSPACE_DE'
     },
     {
         name: 'synonyms-fr',
         type: 'Synonyms',
         language: 'fr',
-        description: 'Synonyms French'
+        description: 'Synonyms French',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SYNONYMS_WORKSPACE_FR'
     },
     {
         name: 'synonyms-en',
         type: 'Synonyms',
         language: 'en',
-        description: 'Synonyms English'
+        description: 'Synonyms English',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SYNONYMS_WORKSPACE_EN'
     },
     {
         name: 'synonyms-de',
         type: 'Synonyms',
         language: 'de',
-        description: 'Synonyms German'
+        description: 'Synonyms German',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SYNONYMS_WORKSPACE_DE'
     },
     {
         name: 'definition-fr',
         type: 'Definition',
         language: 'fr',
-        description: 'Definition French'
+        description: 'Definition French',
+        varName: 'COGNITIVE_PROVIDER_WATSON_DEFINITION_WORKSPACE_FR'
     },
     {
         name: 'definition-en',
         type: 'Definition',
         language: 'en',
-        description: 'Definition English'
+        description: 'Definition English',
+        varName: 'COGNITIVE_PROVIDER_WATSON_DEFINITION_WORKSPACE_EN'
     },
     {
         name: 'definition-de',
         type: 'Definition',
         language: 'de',
-        description: 'Definition German'
+        description: 'Definition German',
+        varName: 'COGNITIVE_PROVIDER_WATSON_DEFINITION_WORKSPACE_DE'
     },
     {
         name: 'kfold-fr',
         type: 'Kfold',
         language: 'fr',
-        description: 'Kfold French'
+        description: 'Kfold French',
+        varName: 'COGNITIVE_PROVIDER_WATSON_K_FOLD_WORKSPACE_FR'
     },
     {
         name: 'kfold-en',
         type: 'Kfold',
         language: 'en',
-        description: 'Kfold English'
+        description: 'Kfold English',
+        varName: 'COGNITIVE_PROVIDER_WATSON_K_FOLD_WORKSPACE_EN'
     },
     {
         name: 'kfold-de',
         type: 'Kfold',
         language: 'de',
-        description: 'Kfold German'
+        description: 'Kfold German',
+        varName: 'COGNITIVE_PROVIDER_WATSON_K_FOLD_WORKSPACE_DE'
     },
     {
         name: 'social-fr',
         type: 'Social',
         language: 'fr',
-        description: 'Social French'
+        description: 'Social French',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SOCIAL_WORKSPACE_FR'
     },
     {
         name: 'social-en',
         type: 'Social',
         language: 'en',
-        description: 'Social English'
+        description: 'Social English',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SOCIAL_WORKSPACE_EN'
     },
     {
         name: 'social-de',
         type: 'Social',
         language: 'de',
-        description: 'Social German'
+        description: 'Social German',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SOCIAL_WORKSPACE_DE'
     },
 ];
