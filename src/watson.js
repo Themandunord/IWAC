@@ -19,9 +19,9 @@ async function createWorkspaces({
         version
     });
 
-    await Promise.all(workspaces.map(async (wks) => {
+    return await Promise.all(workspaces.map(async (wks) => {
         try {
-            await createWorkspace({
+            return await createWorkspace({
                 assistant,
                 name: wks.name,
                 description: wks.description || '',
@@ -69,10 +69,9 @@ async function createWorkspace({ assistant, name, description, language }) {
             if (err) {
                 console.error(err);
                 return reject(err);
-            } else {
-                console.log(JSON.stringify(response, null, 2));
-                return resolve(response);
             }
+
+            return resolve(response);
         });
     });
 }
