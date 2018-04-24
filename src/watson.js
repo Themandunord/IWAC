@@ -6,8 +6,7 @@ async function createWorkspaces({
     username,
     password,
     version = '2018-02-16',
-    workspaces,
-    outputType = 'json'
+    workspaces
 }) {
     if (!workspaces || (workspaces && !workspaces.length)) {
         return;
@@ -26,8 +25,7 @@ async function createWorkspaces({
                 assistant,
                 name: wks.name,
                 description: wks.description || '',
-                language: wks.language || 'en',
-                outputType
+                language: wks.language || 'en'
             })
         } catch (err) {
             console.err(err)
@@ -63,7 +61,7 @@ async function deleteWorkspaces({
 }
 
 
-async function createWorkspace({ assistant, name, description, language, outputType }) {
+async function createWorkspace({ assistant, name, description, language }) {
     return new Promise((resolve, reject) => {
         const workspace = { name, description, language };
 

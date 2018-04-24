@@ -31,8 +31,7 @@ program
                 url: answers.url,
                 username: answers.username,
                 password: answers.password,
-                workspaces: wks,
-                outputType
+                workspaces: wks
             });
 
             if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
