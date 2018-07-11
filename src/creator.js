@@ -82,7 +82,7 @@ program
   .command('migrate')
   .alias('m')
   .description('Migrate Watson Assistant Workspaces')
-  .action(async (options) => {
+  .action(async () => {
       try {
           const answers = await prompt(questions.listWorkspaces);
 
@@ -92,15 +92,23 @@ program
               password: answers.password
           });
 
-          const selectedWorkspaces = await prompt(questions.migrate(listResponse.workspaces));
+          const workspacesNames = _.map(listResponse.workspaces, wk => wk.name)
+          const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
+
+          const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
+              const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
+              if(wk && !_.isUndefined(wk)) result.push(wk);
+              return result
+          }, []);
 
           const watsonWks = await migratesWorkspaces({
               assistant: listResponse.assistant,
-              workspaces: selectedWorkspaces
+              workspaces: selectedWorkspaces,
+              stage: selectedWorkspacesNames.stage
           });
 
           if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
-              console.log('Your workspace(s) were successfully migrated :), \nhere the new workspace(s) :\n', watsonWks)
+              console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks)
           }
           else {
               console.log('Oops, a problem occurred ! No workspaces were returned :/')

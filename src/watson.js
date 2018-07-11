@@ -166,17 +166,6 @@ async function migrateWorkspace({assistant, workspace_id, name, description, lan
         })
 }
 
-async function getAllWorkspaces({names}) {
-    return listWorkspaces({assistant})
-        .then(responses => {
-            return _.reduce(names, (result, name) => {
-                const wk = _.find(responses, response => name === response.name);
-                if(wk && !_.isUndefined(wk)) result.push(wk);
-                return result
-            }, [])
-        })
-}
-
 async function listAllWorkspacesNames({
     url = 'https://gateway.watsonplatform.net/assistant/api/',
     username,
@@ -192,24 +181,21 @@ async function listAllWorkspacesNames({
 
     return await listWorkspaces({assistant})
         .then(res => {
-            const workspaces =  _.map(res, wk => wk.name);
-            return {workspaces, assistant}
+            return {workspaces : res, assistant}
         })
 
 }
 
-async function migratesWorkspaces({assistant, workspaces}) {
+async function migratesWorkspaces({assistant, workspaces, stage}) {
     if (!workspaces || workspaces.length < 1) {
         return;
     }
 
-    const workspacesIds = await getAllWorkspaces({names: workspaces.names});
-
-    return await Promise.all(workspacesIds.map(async (wks) => {
+    return await Promise.all(workspaces.map(async (wks) => {
         try{
             return await migrateWorkspace({
                 assistant,
-                name: wks.name + workspaces.stage,
+                name: wks.name + stage,
                 workspace_id: wks.workspace_id,
                 description: wks.description || '',
                 language: wks.language || 'en'
