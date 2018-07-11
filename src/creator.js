@@ -1,6 +1,6 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
-const { createWorkspaces, deleteWorkspaces } = require('./watson');
+const { createWorkspaces, deleteWorkspaces, migratesWorkspaces, listAllWorkspacesNames } = require('./watson');
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
 const yaml = require('js-yaml');
@@ -76,7 +76,39 @@ program
         catch (err) {
             console.error(err);
         }
-    }); 
+    });
+
+program
+  .command('migrate')
+  .alias('m')
+  .description('Migrate Watson Assistant Workspaces')
+  .action(async (options) => {
+      try {
+          const answers = await prompt(questions.listWorkspaces);
+
+          const listResponse = await listAllWorkspacesNames({
+              url: answers.url,
+              username: answers.username,
+              password: answers.password
+          });
+
+          const selectedWorkspaces = await prompt(questions.migrate(listResponse.workspaces));
+
+          const watsonWks = await migratesWorkspaces({
+              assistant: listResponse.assistant,
+              workspaces: selectedWorkspaces
+          });
+
+          if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
+              console.log('Your workspace(s) were successfully migrated :), \nhere the new workspace(s) :\n', watsonWks)
+          }
+          else {
+              console.log('Oops, a problem occurred ! No workspaces were returned :/')
+          }
+      } catch (err) {
+          console.error(err);
+      }
+  });
 
 program.parse(process.argv);
 
