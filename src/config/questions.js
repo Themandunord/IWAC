@@ -91,5 +91,55 @@ module.exports = {
                 return input && input.length > 0;
             },
         }
-    ]
+    ],
+    listWorkspaces:[
+        {
+            type: 'input',
+            name: 'url',
+            message: 'Enter Watson URL :',
+            default: 'https://gateway.watsonplatform.net/assistant/api'
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: 'Enter Watson username :',
+            validate: function (input) {
+                return input && input.length > 0;
+            },
+        },
+        {
+            type: 'input',
+            name: 'password',
+            message: 'Enter Watson password :',
+            validate: function (input) {
+                return input && input.length > 0;
+            },
+        },
+
+    ],
+    migrate(workspaces) {
+        return [
+            {
+                type: 'checkbox',
+                name: 'names',
+                message: 'What are the workspaces you want to migrate?',
+                choices: workspaces,
+
+                validate: function (answer) {
+                    if (answer.length < 1) {
+                        return 'You must choose at least one workspace.';
+                    }
+                    return true;
+                }
+            },
+            {
+                type: 'input',
+                name: 'stage',
+                message: 'what is your new stage?',
+                validate: function (input) {
+                    return input && input.length > 0;
+                },
+            },
+        ]
+    }
 };

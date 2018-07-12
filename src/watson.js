@@ -1,4 +1,5 @@
 const Assistant = require('watson-developer-cloud/assistant/v1');
+const _ = require('lodash');
 
 
 async function createWorkspaces({
@@ -116,7 +117,99 @@ function getAssistant({
     });
 }
 
+async function getWorkspaceAndData({ assistant, workspace_id }){
+    return new Promise((resolve, reject) => {
+        assistant.getWorkspace({ workspace_id, export: true }, function (err, response) {
+            if (err) {
+                console.error(err);
+                return reject(err);
+            } else {
+                return resolve(response);
+            }
+        });
+    });
+}
+
+async function createWorkspaceWithData({ assistant, name, description, language, intents = null, entities = null, dialog_nodes = null, counterexamples = null }) {
+    return new Promise((resolve, reject) => {
+        const workspace = { name, description, language };
+        intents ? _.set(workspace, 'intents', intents) : null;
+        entities ? _.set(workspace, 'entities', entities) : null;
+        dialog_nodes ? _.set(workspace, 'dialog_nodes', dialog_nodes) : null;
+        counterexamples ? _.set(workspace, 'counterexamples', counterexamples) : null;
+
+        assistant.createWorkspace(workspace, function (err, response) {
+            if (err) {
+                console.error(err);
+                return reject(err);
+            }
+
+            return resolve(response);
+        });
+    });
+}
+
+async function migrateWorkspace({assistant, workspace_id, name, description, language}) {
+
+    return getWorkspaceAndData({assistant, workspace_id})
+        .then(response => {
+            return createWorkspaceWithData({
+                assistant,
+                name,
+                description,
+                language,
+                intents: _.get(response, 'intents', null),
+                entities: _.get(response, 'entities', null),
+                dialog_nodes: _.get(response, 'dialog_nodes', null),
+                counterexamples: _.get(response, 'counterexamples', null)
+            })
+        })
+}
+
+async function listAllWorkspacesNames({
+    url = 'https://gateway.watsonplatform.net/assistant/api/',
+    username,
+    password,
+    version = '2018-02-16' }){
+
+    const assistant = getAssistant({
+        username,
+        password,
+        url,
+        version
+    });
+
+    return await listWorkspaces({assistant})
+        .then(res => {
+            return {workspaces : res, assistant}
+        })
+
+}
+
+async function migratesWorkspaces({assistant, workspaces, stage}) {
+    if (!workspaces || workspaces.length < 1) {
+        return;
+    }
+
+    return await Promise.all(workspaces.map(async (wks) => {
+        try{
+            return await migrateWorkspace({
+                assistant,
+                name: wks.name + stage,
+                workspace_id: wks.workspace_id,
+                description: wks.description || '',
+                language: wks.language || 'en'
+
+            })
+        } catch (err) {
+            console.error(err)
+        }
+    }));
+}
+
 module.exports = {
     createWorkspaces,
-    deleteWorkspaces
+    deleteWorkspaces,
+    migratesWorkspaces,
+    listAllWorkspacesNames
 };
