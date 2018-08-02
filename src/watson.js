@@ -16,9 +16,8 @@ async function getWorkspaces({
 
   const workspaces = await assistant.listWorkspaces({ assistant });
   return await Promise.all(workspaces.map((wks) => {
-    console.log(wks);
     return workspaces;
-  });
+  }));
 }
 
 async function createWorkspaces({
