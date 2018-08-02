@@ -14,7 +14,7 @@ const lang = {
 
 program
     .description('CLI to create Watson Assistant Workspaces')
-    .version('1.0.6', '-v, --version');
+    .version('1.0.7', '-v, --version');
 
 program
     .command('create')
@@ -126,9 +126,9 @@ program
     const answers = await prompt(questions.delete);
     try {
       const wks = await getWorkspaces({
-        // url: answers.url,
-        // username: answers.username,
-        // password: answers.password,
+        url: answers.url,
+        username: answers.username,
+        password: answers.password,
       });
       console.log(wks);
       console.log('Your workspaces :)')
