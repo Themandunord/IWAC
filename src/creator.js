@@ -121,22 +121,39 @@ program
 program
   .command('list')
   .alias('l')
+  .option('-y, --yml', 'Output yml format')
   .description('List all Watson Assistant Workspaces')
-  .action(async () => {
-    const answers = await prompt(questions.delete);
+  .action(async (options) => {
     try {
-      const wks = await getWorkspaces({
+      const answers = await prompt(questions.listWorkspaces);
+      const outputType = options.yml ? 'yml' : 'json';
+
+      const listResponse = await listAllWorkspacesNames({
         url: answers.url,
         username: answers.username,
-        password: answers.password,
+        password: answers.password
       });
-      console.log(wks);
-      console.log('Your workspaces :)')
-    }
-    catch (err) {
+      const workspaces = (_.get(listResponse, 'workspaces', []));
+      switch (outputType) {
+        case 'yml':
+          console.log(yaml.dump({
+            env: workspaces.map((obj) => {
+              return {
+                name: obj.name,
+                value: obj.workspace_id,
+              }
+            })
+          }));
+          break;
+        default:
+          console.log(workspaces);
+      }
+
+    } catch (err) {
       console.error(err);
     }
   });
+
 
 program.parse(process.argv);
 
