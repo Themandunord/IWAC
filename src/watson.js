@@ -1,6 +1,25 @@
 const Assistant = require('watson-developer-cloud/assistant/v1');
 const _ = require('lodash');
 
+async function getWorkspaces({
+  url = 'https://gateway.watsonplatform.net/assistant/api/',
+  username,
+  password,
+  version = '2018-02-16',
+}) {
+  const assistant = getAssistant({
+    username: "e42ec7bf-c42a-4c3e-b897-8f254eed7d64",
+    password: "6YD8P2ddsIBp",
+    url: "https://gateway-fra.watsonplatform.net/conversation/api",
+    version
+  });
+
+  const workspaces = await assistant.listWorkspaces({ assistant });
+  return await Promise.all(workspaces.map((wks) => {
+    console.log(wks);
+    return workspaces;
+  });
+}
 
 async function createWorkspaces({
     url = 'https://gateway.watsonplatform.net/assistant/api/',

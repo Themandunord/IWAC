@@ -14,7 +14,7 @@ const lang = {
 
 program
     .description('CLI to create Watson Assistant Workspaces')
-    .version('1.0.5', '-v, --version');
+    .version('1.0.6', '-v, --version');
 
 program
     .command('create')
@@ -58,11 +58,11 @@ program
             console.error(err);
         }
     });
-   
+
 program
     .command('delete')
     .alias('d')
-    .description('Delete all Watson Assistant Workspaces')   
+    .description('Delete all Watson Assistant Workspaces')
     .action(async () => {
         const answers = await prompt(questions.delete);
         try {
@@ -116,6 +116,26 @@ program
       } catch (err) {
           console.error(err);
       }
+  });
+
+program
+  .command('list')
+  .alias('l')
+  .description('List all Watson Assistant Workspaces')
+  .action(async () => {
+    const answers = await prompt(questions.delete);
+    try {
+      const wks = await getWorkspaces({
+        // url: answers.url,
+        // username: answers.username,
+        // password: answers.password,
+      });
+      console.log(wks);
+      console.log('Your workspaces :)')
+    }
+    catch (err) {
+      console.error(err);
+    }
   });
 
 program.parse(process.argv);
