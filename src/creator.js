@@ -14,7 +14,7 @@ const lang = {
 
 program
     .description('CLI to create Watson Assistant Workspaces')
-    .version('1.0.5', '-v, --version');
+    .version('1.0.7', '-v, --version');
 
 program
     .command('create')
@@ -58,11 +58,11 @@ program
             console.error(err);
         }
     });
-   
+
 program
     .command('delete')
     .alias('d')
-    .description('Delete all Watson Assistant Workspaces')   
+    .description('Delete all Watson Assistant Workspaces')
     .action(async () => {
         const answers = await prompt(questions.delete);
         try {
@@ -117,6 +117,43 @@ program
           console.error(err);
       }
   });
+
+program
+  .command('list')
+  .alias('l')
+  .option('-y, --yml', 'Output yml format')
+  .description('List all Watson Assistant Workspaces')
+  .action(async (options) => {
+    try {
+      const answers = await prompt(questions.listWorkspaces);
+      const outputType = options.yml ? 'yml' : 'json';
+
+      const listResponse = await listAllWorkspacesNames({
+        url: answers.url,
+        username: answers.username,
+        password: answers.password
+      });
+      const workspaces = (_.get(listResponse, 'workspaces', []));
+      switch (outputType) {
+        case 'yml':
+          console.log(yaml.dump({
+            env: workspaces.map((obj) => {
+              return {
+                name: obj.name,
+                value: obj.workspace_id,
+              }
+            })
+          }));
+          break;
+        default:
+          console.log(workspaces);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
 
 program.parse(process.argv);
 
