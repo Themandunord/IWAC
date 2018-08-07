@@ -102,17 +102,17 @@ module.exports = {
             },
         }
     ],
-    listWorkspaces:[
+    listSourceWorkspaces:[
         {
             type: 'input',
             name: 'url',
-            message: 'Enter Watson URL :',
+            message: 'Enter Source Watson URL :',
             default: 'https://gateway.watsonplatform.net/assistant/api'
         },
         {
             type: 'input',
             name: 'username',
-            message: 'Enter Watson username :',
+            message: 'Enter Source Watson username :',
             validate: function (input) {
                 return input && input.length > 0;
             },
@@ -120,11 +120,36 @@ module.exports = {
         {
             type: 'input',
             name: 'password',
-            message: 'Enter Watson password :',
+            message: 'Enter Source Watson password :',
             validate: function (input) {
                 return input && input.length > 0;
             },
         },
+
+    ],
+    listDestWorkspaces:[
+        {
+            type: 'input',
+            name: 'url',
+            message: 'Enter Destination Watson URL :',
+            default: 'https://gateway.watsonplatform.net/assistant/api'
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: 'Enter Destination Watson username :',
+            validate: function (input) {
+                return input && input.length > 0;
+            },
+        },
+        {
+            type: 'input',
+            name: 'password',
+            message: 'Enter Destination Watson password :',
+            validate: function (input) {
+                return input && input.length > 0;
+            },
+    },
 
     ],
     migrate(workspaces) {
@@ -141,14 +166,6 @@ module.exports = {
                     }
                     return true;
                 }
-            },
-            {
-                type: 'input',
-                name: 'stage',
-                message: 'what is your new stage?',
-                validate: function (input) {
-                    return input && input.length > 0;
-                },
             },
         ]
     }

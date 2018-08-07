@@ -130,34 +130,39 @@ program
   .description('Migrate Watson Assistant Workspaces')
   .action(async () => {
       try {
-          const answers = await prompt(questions.listWorkspaces);
+          const answersSource = await prompt(questions.listSourceWorkspaces);
 
           const listResponse = await listAllWorkspacesNames({
-              url: answers.url,
-              username: answers.username,
-              password: answers.password
+              url: answersSource.url,
+              username: answersSource.username,
+              password: answersSource.password
           });
 
-          const workspacesNames = _.map(listResponse.workspaces, wk => wk.name)
+          console.log(listResponse);
+
+          const workspacesNames = _.map(listResponse.workspaces, wk => wk.name);
           const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
 
           const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
               const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
               if(wk && !_.isUndefined(wk)) result.push(wk);
-              return result
+              return result;
           }, []);
 
+          const answersDest = await prompt(questions.listDestWorkspaces);
+
           const watsonWks = await migratesWorkspaces({
-              assistant: listResponse.assistant,
+              url: answersDest.url,
+              username: answersDest.username,
+              password: answersDest.password,
+              assistantSource: listResponse.assistant,
               workspaces: selectedWorkspaces,
-              stage: selectedWorkspacesNames.stage
           });
 
           if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
-              console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks)
-          }
-          else {
-              console.log('Oops, a problem occurred ! No workspaces were returned :/')
+              console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
+          } else {
+              console.log('Oops, a problem occurred ! No workspaces were returned :/');
           }
       } catch (err) {
           console.error(err);

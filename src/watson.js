@@ -148,15 +148,15 @@ async function createWorkspaceWithData({ assistant, name, description, language,
     });
 }
 
-async function migrateWorkspace({assistant, workspace_id, name, description, language}) {
+async function migrateWorkspace({assistantDest, assistantSource, workspace_id, name, description, language}) {
 
-    return getWorkspaceAndData({assistant, workspace_id})
+    return getWorkspaceAndData({assistant: assistantSource, workspace_id})
         .then(response => {
             return createWorkspaceWithData({
-                assistant,
                 name,
                 description,
                 language,
+                assistant: assistantDest,
                 intents: _.get(response, 'intents', null),
                 entities: _.get(response, 'entities', null),
                 dialog_nodes: _.get(response, 'dialog_nodes', null),
@@ -185,20 +185,27 @@ async function listAllWorkspacesNames({
 
 }
 
-async function migratesWorkspaces({assistant, workspaces, stage}) {
+async function migratesWorkspaces({assistantSource, url, username, password, version = '2018-02-16', workspaces, stage}) {
     if (!workspaces || workspaces.length < 1) {
         return;
     }
 
+    const assistantDest = getAssistant({
+        username,
+        password,
+        url,
+        version
+    });
+
     return await Promise.all(workspaces.map(async (wks) => {
         try{
             return await migrateWorkspace({
-                assistant,
-                name: wks.name + stage,
+                assistantDest,
+                assistantSource,
+                name: wks.name,
                 workspace_id: wks.workspace_id,
                 description: wks.description || '',
                 language: wks.language || 'en'
-
             })
         } catch (err) {
             console.error(err)
