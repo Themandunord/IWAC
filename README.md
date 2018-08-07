@@ -18,8 +18,8 @@ $ npm i iwac -g
 
 ```js
 iwac --help
-iwac create|c
 iwac list|l (-y | --yml if you want to export to yaml)
+iwac create|c
 iwac delete|d
 iwac migrate|m
 ```
