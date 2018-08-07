@@ -18,11 +18,19 @@ $ npm i iwac -g
 
 ```js
 iwac --help
-iwac create|c (-y | --yml if you want to export to yaml)
 iwac list|l (-y | --yml if you want to export to yaml)
+iwac create|c
 iwac delete|d
 iwac migrate|m
 ```
+
+iwac create options :
+- -y | --yml if you want to export to yaml
+- -a, --url <url> Url of watson assistant
+- -u, --username <username> Username of watson assistant
+- -p, --password <password> Password of watson assistant
+- -l, --languages <a>,<b> Languages of workspaces separated by a comma
+- -t, --types <a>,<b> Types of workspaces separated by a comma
 
 ## Contributing
 
