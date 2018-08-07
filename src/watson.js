@@ -1,7 +1,6 @@
 const Assistant = require('watson-developer-cloud/assistant/v1');
 const _ = require('lodash');
 
-
 async function createWorkspaces({
     url = 'https://gateway.watsonplatform.net/assistant/api/',
     username,
