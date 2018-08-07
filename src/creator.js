@@ -1,6 +1,6 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
-const { createWorkspaces, deleteWorkspaces } = require('./watson');
+const { createWorkspaces, deleteWorkspaces, migratesWorkspaces, listAllWorkspacesNames } = require('./watson');
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
 const yaml = require('js-yaml');
@@ -14,7 +14,7 @@ const lang = {
 
 program
     .description('CLI to create Watson Assistant Workspaces')
-    .version('1.0.4', '-v, --version');
+    .version('1.0.5', '-v, --version');
 
 program
     .command('create')
@@ -76,7 +76,47 @@ program
         catch (err) {
             console.error(err);
         }
-    }); 
+    });
+
+program
+  .command('migrate')
+  .alias('m')
+  .description('Migrate Watson Assistant Workspaces')
+  .action(async () => {
+      try {
+          const answers = await prompt(questions.listWorkspaces);
+
+          const listResponse = await listAllWorkspacesNames({
+              url: answers.url,
+              username: answers.username,
+              password: answers.password
+          });
+
+          const workspacesNames = _.map(listResponse.workspaces, wk => wk.name)
+          const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
+
+          const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
+              const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
+              if(wk && !_.isUndefined(wk)) result.push(wk);
+              return result
+          }, []);
+
+          const watsonWks = await migratesWorkspaces({
+              assistant: listResponse.assistant,
+              workspaces: selectedWorkspaces,
+              stage: selectedWorkspacesNames.stage
+          });
+
+          if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
+              console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks)
+          }
+          else {
+              console.log('Oops, a problem occurred ! No workspaces were returned :/')
+          }
+      } catch (err) {
+          console.error(err);
+      }
+  });
 
 program.parse(process.argv);
 

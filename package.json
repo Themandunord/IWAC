@@ -1,6 +1,6 @@
 {
   "name": "iwac",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Command line tool to create Watson Assistant Workspaces",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,6 @@
   "homepage": "https://github.com/Themandunord/IWAC#readme",
   "dependencies": {
     "commander": "^2.15.1",
-    "dotenv": "^5.0.1",
     "inquirer": "^5.2.0",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
