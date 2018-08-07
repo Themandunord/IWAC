@@ -20,13 +20,60 @@ program
     .command('create')
     .alias('c')
     .option('-y, --yml', 'Output yml format')
+    .option('-a, --url <url>', 'Url of watson assistant')
+    .option('-u, --username <username>', 'Username of watson assistant')
+    .option('-p, --password <password>', 'Password of watson assistant')
+    .option('-l, --languages <a>,<b>', 'Languages of workspaces', val => val.split(',').map(String))
+    .option('-t, --types <a>,<b>', 'Types of workspaces', val => val.split(',').map(String))
     .description('Create Watson Assistant Workspaces')
     .action(async (options) => {
         try {
-            const answers = await prompt(questions.create);
+            const outputType = options.yml ? 'yml' : 'json';
+            const url = options.url;
+            const username = options.username;
+            const password = options.password;
+            const languages = options.languages;
+            const types = options.types;
+            const answers = {};
+
+            if (url) {
+                answers.url = url
+            } else {
+                const answer = await prompt(questions.create.url);
+                answers.url = answer.url;
+            }
+
+            if (username) {
+                answers.username = username
+            } else {
+                const answer = await prompt(questions.create.username);
+                answers.username = answer.username;
+            }
+
+            if (password) {
+                answers.password = password
+            } else {
+                const answer = await prompt(questions.create.password);
+                answers.password = answer.password;
+            }
+
+            if (languages) {
+                answers.languages = languages
+            } else {
+                const answer = await prompt(questions.create.languages);
+                answers.languages = answer.languages;
+            }
+
+            if (types) {
+                answers.types = types
+            } else {
+                const answer = await prompt(questions.create.types);
+                answers.types = answer.types;
+            }
+
             const _langs = answers.languages.map(l => lang[l]);
             const wks = workspaces.filter(w => _langs.includes(w.language) && answers.types.includes(w.type));
-            const outputType = options.yml ? 'yml' : 'json';
+
             const watsonWks = await createWorkspaces({
                 url: answers.url,
                 username: answers.username,
@@ -48,7 +95,6 @@ program
                         break;
                     default:
                         console.log(watsonWks);
-                    console.log('Your workspaces were successfully created :)');
                 }
             } else {
                 console.log('Oops, a problem occurred ! No workspaces were returned :/')
