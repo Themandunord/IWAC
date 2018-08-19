@@ -2,6 +2,8 @@
 
 # IWAC
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Themandunord/IWAC.svg)](https://greenkeeper.io/)
+
 > Command line tool to create Watson Assistant Workspaces
 
 ## Install
