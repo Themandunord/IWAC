@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Themandunord/IWAC#readme",
   "dependencies": {
     "commander": "^2.15.1",
-    "inquirer": "^5.2.0",
+    "inquirer": "^6.1.0",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
     "watson-developer-cloud": "^3.3.0"
