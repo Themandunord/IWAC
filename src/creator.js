@@ -20,7 +20,7 @@ const lang = {
 
 program
     .description('CLI to create Watson Assistant Workspaces')
-    .version('1.0.8', '-v, --version');
+    .version('1.0.9', '-v, --version');
 
 program
     .command('create')
