@@ -1,6 +1,12 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
-const { createWorkspaces, deleteWorkspaces, migratesWorkspaces, listAllWorkspacesNames } = require('./watson');
+const { 
+    createWorkspaces, 
+    deleteWorkspaces, 
+    migratesWorkspaces, 
+    listAllWorkspacesNames 
+} = require('iwac-utils');
+
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
 const yaml = require('js-yaml');
