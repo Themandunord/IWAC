@@ -102,6 +102,30 @@ module.exports = {
             },
         }
     ],
+    listWorkspaces: [
+        {
+            type: 'input',
+            name: 'url',
+            message: 'Enter Watson URL :',
+            default: 'https://gateway.watsonplatform.net/assistant/api'
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: 'Enter Watson username :',
+            validate: function (input) {
+                return input && input.length > 0;
+            },
+        },
+        {
+            type: 'input',
+            name: 'password',
+            message: 'Enter Watson password :',
+            validate: function (input) {
+                return input && input.length > 0;
+            },
+        }
+    ],
     listSourceWorkspaces:[
         {
             type: 'input',
