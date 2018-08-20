@@ -1,6 +1,6 @@
 {
   "name": "iwac",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Command line tool to create Watson Assistant Workspaces",
   "main": "index.js",
   "scripts": {
