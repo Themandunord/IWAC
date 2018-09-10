@@ -4,13 +4,16 @@ const {
     createWorkspaces, 
     deleteWorkspaces, 
     migratesWorkspaces, 
-    listAllWorkspacesNames 
-} = require('iwac-utils');
+    listAllWorkspacesNames,
+	  dumpWorkspaces
+} = require('../../IWAC-utils');
 
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
 const yaml = require('js-yaml');
 const _ = require('lodash');
+const fs = require('fs');
+const path = require('path');
 
 const lang = {
     'French': 'fr',
@@ -112,9 +115,9 @@ program
     });
 
 program
-    .command('delete')
-    .alias('d')
-    .description('Delete all Watson Assistant Workspaces')
+    .command('remove')
+    .alias('r')
+    .description('Remove all Watson Assistant Workspaces')
     .action(async () => {
         const answers = await prompt(questions.delete);
         try {
@@ -134,45 +137,51 @@ program
   .command('migrate')
   .alias('m')
   .description('Migrate Watson Assistant Workspaces')
-  .action(async () => {
-      try {
-          const answersSource = await prompt(questions.listSourceWorkspaces);
+  .action(async (options) => {
+		const outputDirectory = options.outputDirectory ? options.outputDirectory : '.';
+    try {
+			if (fs.existsSync(outputDirectory) && !fs.lstatSync(outputDirectory).isDirectory()) {
+				console.error('Bad output directory');
+			} else {
+				if (!fs.existsSync(outputDirectory)) {
+					fs.mkdirSync(outputDirectory);
+				}
+				const answersSource = await prompt(questions.listSourceWorkspaces);
 
-          const listResponse = await listAllWorkspacesNames({
-              url: answersSource.url,
-              username: answersSource.username,
-              password: answersSource.password
-          });
+				const listResponse = await listAllWorkspacesNames({
+					url: answersSource.url,
+					username: answersSource.username,
+					password: answersSource.password
+				});
 
-          console.log(listResponse);
+				const workspacesNames = _.map(listResponse.workspaces, wk => wk.name);
+				const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
 
-          const workspacesNames = _.map(listResponse.workspaces, wk => wk.name);
-          const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
+				const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
+					const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
+					if (wk && !_.isUndefined(wk)) result.push(wk);
+					return result;
+				}, []);
 
-          const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
-              const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
-              if(wk && !_.isUndefined(wk)) result.push(wk);
-              return result;
-          }, []);
+				const answersDest = await prompt(questions.listDestWorkspaces);
 
-          const answersDest = await prompt(questions.listDestWorkspaces);
+				const watsonWks = await migratesWorkspaces({
+					url: answersDest.url,
+					username: answersDest.username,
+					password: answersDest.password,
+					assistantSource: listResponse.assistant,
+					workspaces: selectedWorkspaces,
+				});
 
-          const watsonWks = await migratesWorkspaces({
-              url: answersDest.url,
-              username: answersDest.username,
-              password: answersDest.password,
-              assistantSource: listResponse.assistant,
-              workspaces: selectedWorkspaces,
-          });
-
-          if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
-              console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
-          } else {
-              console.log('Oops, a problem occurred ! No workspaces were returned :/');
-          }
-      } catch (err) {
-          console.error(err);
-      }
+				if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
+					console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
+				} else {
+					console.log('Oops, a problem occurred ! No workspaces were returned :/');
+				}
+			}
+    } catch (err) {
+        console.error(err);
+    }
   });
 
 program
@@ -209,6 +218,47 @@ program
     } catch (err) {
       console.error(err);
     }
+  });
+
+program
+  .command('dump')
+  .alias('d')
+	.option('-o, --output-directory <path>', 'Specifies where to create dump files')
+  .description('Download Watson Assistant Workspaces')
+  .action(async (options) => {
+    const outputDirectory = options.outputDirectory ? options.outputDirectory : '.';
+    try {
+			if (fs.existsSync(outputDirectory) && !fs.lstatSync(outputDirectory).isDirectory()) {
+				console.error('Bad output directory');
+			} else {
+				if (!fs.existsSync(outputDirectory)) {
+					fs.mkdirSync(outputDirectory);
+				}
+
+				const answers = await prompt(questions.listWorkspaces);
+				const listResponse = await listAllWorkspacesNames({
+					url: answers.url,
+					username: answers.username,
+					password: answers.password
+				});
+				const workspaces = (_.get(listResponse, 'workspaces', []));
+				const dumps = await dumpWorkspaces({
+					url: answers.url,
+					username: answers.username,
+					password: answers.password,
+					workspaces
+				});
+
+				_.forEach(dumps, workspace => fs.writeFileSync(path.format({
+					dir: outputDirectory,
+					name: workspace.workspace_id,
+					ext: '.json'
+				}), JSON.stringify(workspace)));
+			}
+		} catch (e) {
+      console.error('An error occurred');
+      console.error(e);
+		}
   });
 
 

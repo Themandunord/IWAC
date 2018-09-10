@@ -20,8 +20,9 @@ $ npm i iwac -g
 iwac --help
 iwac list|l
 iwac create|c
-iwac delete|d
+iwac remove|r
 iwac migrate|m
+iwac d|dump
 ```
 
 iwac create options :
@@ -31,6 +32,9 @@ iwac create options :
 - -p, --password <password> Password of watson assistant
 - -l, --languages <a>,<b> Languages of workspaces separated by a comma
 - -t, --types <a>,<b> Types of workspaces separated by a comma
+
+iwac dump options :
+- -o | --output-directory *Mandatory* Specifies where to create dump files
 
 ## Contributing
 
