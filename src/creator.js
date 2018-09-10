@@ -138,46 +138,38 @@ program
   .alias('m')
   .description('Migrate Watson Assistant Workspaces')
   .action(async (options) => {
-		const outputDirectory = options.outputDirectory ? options.outputDirectory : '.';
     try {
-			if (fs.existsSync(outputDirectory) && !fs.lstatSync(outputDirectory).isDirectory()) {
-				console.error('Bad output directory');
+			const answersSource = await prompt(questions.listSourceWorkspaces);
+
+			const listResponse = await listAllWorkspacesNames({
+				url: answersSource.url,
+				username: answersSource.username,
+				password: answersSource.password
+			});
+
+			const workspacesNames = _.map(listResponse.workspaces, wk => wk.name);
+			const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
+
+			const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
+				const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
+				if (wk && !_.isUndefined(wk)) result.push(wk);
+				return result;
+			}, []);
+
+			const answersDest = await prompt(questions.listDestWorkspaces);
+
+			const watsonWks = await migratesWorkspaces({
+				url: answersDest.url,
+				username: answersDest.username,
+				password: answersDest.password,
+				assistantSource: listResponse.assistant,
+				workspaces: selectedWorkspaces,
+			});
+
+			if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
+				console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
 			} else {
-				if (!fs.existsSync(outputDirectory)) {
-					fs.mkdirSync(outputDirectory);
-				}
-				const answersSource = await prompt(questions.listSourceWorkspaces);
-
-				const listResponse = await listAllWorkspacesNames({
-					url: answersSource.url,
-					username: answersSource.username,
-					password: answersSource.password
-				});
-
-				const workspacesNames = _.map(listResponse.workspaces, wk => wk.name);
-				const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
-
-				const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
-					const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
-					if (wk && !_.isUndefined(wk)) result.push(wk);
-					return result;
-				}, []);
-
-				const answersDest = await prompt(questions.listDestWorkspaces);
-
-				const watsonWks = await migratesWorkspaces({
-					url: answersDest.url,
-					username: answersDest.username,
-					password: answersDest.password,
-					assistantSource: listResponse.assistant,
-					workspaces: selectedWorkspaces,
-				});
-
-				if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
-					console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
-				} else {
-					console.log('Oops, a problem occurred ! No workspaces were returned :/');
-				}
+				console.log('Oops, a problem occurred ! No workspaces were returned :/');
 			}
     } catch (err) {
         console.error(err);
