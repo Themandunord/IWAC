@@ -6,7 +6,7 @@ const {
     migratesWorkspaces, 
     listAllWorkspacesNames,
 	  dumpWorkspaces
-} = require('../../IWAC-utils');
+} = require('IWAC-utils');
 
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
