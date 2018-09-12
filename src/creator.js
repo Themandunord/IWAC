@@ -136,10 +136,48 @@ program
 program
   .command('migrate')
   .alias('m')
+	.option('--url-source <urlSource>', 'Source url')
+	.option('--pwd-source <pwdSource>', 'Source password')
+	.option('--user-source <userSource>', 'Source user')
+	.option('--url-dest <urlDest>', 'Destination url')
+	.option('--pwd-dest <pwdDest>', 'Destination Password')
+	.option('--user-dest <userDest>', 'Destination user')
+	.option('-a --all', 'Migrate all workspaces')
   .description('Migrate Watson Assistant Workspaces')
   .action(async (options) => {
     try {
-			const answersSource = await prompt(questions.listSourceWorkspaces);
+			const urlSource = options.urlSource;
+			const usernameSource = options.userSource;
+			const passwordSource = options.pwdSource;
+
+			const urlDest = options.urlDest;
+			const usernameDest = options.userDest;
+			const passwordDest = options.pwdDest;
+
+			const shouldMigrateAll = options.all;
+
+			const answersSource = {};
+
+			if (urlSource) {
+				answersSource.url = urlSource
+			} else {
+				const answer = await prompt(questions.listSourceWorkspaces.url);
+				answersSource.url = answer.url;
+			}
+
+			if (usernameSource) {
+				answersSource.username = usernameSource
+			} else {
+				const answer = await prompt(questions.listSourceWorkspaces.username);
+				answersSource.username = answer.username;
+			}
+
+			if (passwordSource) {
+				answersSource.password = passwordSource
+			} else {
+				const answer = await prompt(questions.listSourceWorkspaces.password);
+				answersSource.password = answer.password;
+			}
 
 			const listResponse = await listAllWorkspacesNames({
 				url: answersSource.url,
@@ -148,7 +186,12 @@ program
 			});
 
 			const workspacesNames = _.map(listResponse.workspaces, wk => wk.name);
-			const selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
+			let selectedWorkspacesNames = [];
+			if (shouldMigrateAll) {
+				selectedWorkspacesNames = { names: workspacesNames };
+			} else {
+				selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
+			}
 
 			const selectedWorkspaces = _.reduce(selectedWorkspacesNames.names, (result, name) => {
 				const wk = _.find(listResponse.workspaces, workspace => name === workspace.name);
@@ -156,7 +199,28 @@ program
 				return result;
 			}, []);
 
-			const answersDest = await prompt(questions.listDestWorkspaces);
+			const answersDest = {};
+
+			if (urlSource) {
+				answersDest.url = urlDest
+			} else {
+				const answer = await prompt(questions.listDestWorkspaces.url);
+				answersDest.url = answer.url;
+			}
+
+			if (usernameSource) {
+				answersDest.username = usernameDest
+			} else {
+				const answer = await prompt(questions.listDestWorkspaces.username);
+				answersDest.username = answer.username;
+			}
+
+			if (passwordSource) {
+				answersDest.password = passwordDest
+			} else {
+				const answer = await prompt(questions.listDestWorkspaces.password);
+				answersDest.password = answer.password;
+			}
 
 			const watsonWks = await migratesWorkspaces({
 				url: answersDest.url,
@@ -216,9 +280,17 @@ program
   .command('dump')
   .alias('d')
 	.option('-o, --output-directory <path>', 'Specifies where to create dump files')
+	.option('-a, --url <url>', 'Url of watson assistant')
+	.option('-u, --username <username>', 'Username of watson assistant')
+	.option('-p, --password <password>', 'Password of watson assistant')
   .description('Download Watson Assistant Workspaces')
   .action(async (options) => {
-    const outputDirectory = options.outputDirectory ? options.outputDirectory : '.';
+		const outputDirectory = options.outputDirectory ? options.outputDirectory : '.';
+		const url = options.url;
+		const username = options.username;
+		const password = options.password;
+		const answers = {};
+
     try {
 			if (fs.existsSync(outputDirectory) && !fs.lstatSync(outputDirectory).isDirectory()) {
 				console.error('Bad output directory');
@@ -227,7 +299,27 @@ program
 					fs.mkdirSync(outputDirectory);
 				}
 
-				const answers = await prompt(questions.listWorkspaces);
+				if (url) {
+					answers.url = url
+				} else {
+					const answer = await prompt(questions.create.url);
+					answers.url = answer.url;
+				}
+
+				if (username) {
+					answers.username = username
+				} else {
+					const answer = await prompt(questions.create.username);
+					answers.username = answer.username;
+				}
+
+				if (password) {
+					answers.password = password
+				} else {
+					const answer = await prompt(questions.create.password);
+					answers.password = answer.password;
+				}
+
 				const listResponse = await listAllWorkspacesNames({
 					url: answers.url,
 					username: answers.username,
