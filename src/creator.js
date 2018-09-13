@@ -106,7 +106,7 @@ program
                         console.log(watsonWks);
                 }
             } else {
-                console.log('Oops, a problem occurred ! No workspaces were returned :/')
+                console.error('Oops, a problem occurred ! No workspaces were returned :/')
             }
         }
         catch (err) {
@@ -233,7 +233,7 @@ program
 			if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
 				console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
 			} else {
-				console.log('Oops, a problem occurred ! No workspaces were returned :/');
+				console.error('Oops, a problem occurred ! No workspaces were returned :/');
 			}
     } catch (err) {
         console.error(err);
