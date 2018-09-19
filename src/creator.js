@@ -29,7 +29,7 @@ program
     .command('create')
     .alias('c')
     .option('-y, --yml', 'Output yml format')
-		.option('-j, --json', 'Output json format')
+    .option('-j, --json', 'Output json format')
     .option('-a, --url <url>', 'Url of watson assistant')
     .option('-u, --username <username>', 'Username of watson assistant')
     .option('-p, --password <password>', 'Password of watson assistant')
@@ -103,12 +103,12 @@ program
                             })
                         }));
                         break;
-										case 'json':
-												console.log(watsonWks.reduce((acc, wk) => {
-														acc[wk.name] = wk;
-														return acc;
-												}, {}));
-											break;
+                    case 'json':
+                            console.log(watsonWks.reduce((acc, wk) => {
+                                    acc[wk.name] = wk;
+                                    return acc;
+                            }, {}));
+                        break;
                     default:
                         console.log(watsonWks);
                 }
