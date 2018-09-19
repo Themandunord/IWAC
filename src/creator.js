@@ -29,6 +29,7 @@ program
     .command('create')
     .alias('c')
     .option('-y, --yml', 'Output yml format')
+		.option('-j, --json', 'Output json format')
     .option('-a, --url <url>', 'Url of watson assistant')
     .option('-u, --username <username>', 'Username of watson assistant')
     .option('-p, --password <password>', 'Password of watson assistant')
@@ -37,7 +38,7 @@ program
     .description('Create Watson Assistant Workspaces')
     .action(async (options) => {
         try {
-            const outputType = options.yml ? 'yml' : 'json';
+            const outputType = options.yml ? 'yml' : options.json ? 'json' : 'array';
             const url = options.url;
             const username = options.username;
             const password = options.password;
@@ -102,6 +103,12 @@ program
                             })
                         }));
                         break;
+										case 'json':
+												console.log(watsonWks.reduce((acc, wk) => {
+														acc[wk.name] = wk;
+														return acc;
+												}, {}));
+											break;
                     default:
                         console.log(watsonWks);
                 }
