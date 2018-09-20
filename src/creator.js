@@ -104,10 +104,10 @@ program
                         }));
                         break;
                     case 'json':
-                            console.log(watsonWks.reduce((acc, wk) => {
+                            console.log(JSON.stringify(watsonWks.reduce((acc, wk) => {
                                     acc[wk.name] = wk;
                                     return acc;
-                            }, {}));
+                            }, {})));
                         break;
                     default:
                         console.log(watsonWks);
