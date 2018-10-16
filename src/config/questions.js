@@ -37,6 +37,7 @@ module.exports = {
 					'French',
 					'English',
 					'German',
+					'Dutch'
 				],
 				default: [
 					'French',

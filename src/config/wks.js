@@ -21,6 +21,13 @@ module.exports = [
         varName: 'COGNITIVE_PROVIDER_WATSON_WORKSPACE_DE'
     },
     {
+        name: 'business-nl',
+        type: 'Business',
+        language: 'nl',
+        description: 'Business Dutch',
+        varName: 'COGNITIVE_PROVIDER_WATSON_WORKSPACE_NL'
+    },
+    {
         name: 'synonyms-fr',
         type: 'Synonyms',
         language: 'fr',
@@ -40,6 +47,13 @@ module.exports = [
         language: 'de',
         description: 'Synonyms German',
         varName: 'COGNITIVE_PROVIDER_WATSON_SYNONYMS_WORKSPACE_DE'
+    },
+    {
+        name: 'synonyms-nl',
+        type: 'Synonyms',
+        language: 'nl',
+        description: 'Synonyms Dutch',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SYNONYMS_WORKSPACE_NL'
     },
     {
         name: 'definition-fr',
@@ -63,6 +77,13 @@ module.exports = [
         varName: 'COGNITIVE_PROVIDER_WATSON_DEFINITION_WORKSPACE_DE'
     },
     {
+        name: 'definition-nl',
+        type: 'Definition',
+        language: 'nl',
+        description: 'Definition Dutch',
+        varName: 'COGNITIVE_PROVIDER_WATSON_DEFINITION_WORKSPACE_NL'
+    },
+    {
         name: 'kfold-fr',
         type: 'Kfold',
         language: 'fr',
@@ -84,6 +105,13 @@ module.exports = [
         varName: 'COGNITIVE_PROVIDER_WATSON_K_FOLD_WORKSPACE_DE'
     },
     {
+        name: 'kfold-nl',
+        type: 'Kfold',
+        language: 'nl',
+        description: 'Kfold Dutch',
+        varName: 'COGNITIVE_PROVIDER_WATSON_K_FOLD_WORKSPACE_NL'
+    },
+    {
         name: 'social-fr',
         type: 'Social',
         language: 'fr',
@@ -103,5 +131,12 @@ module.exports = [
         language: 'de',
         description: 'Social German',
         varName: 'COGNITIVE_PROVIDER_WATSON_SOCIAL_WORKSPACE_DE'
+    },
+    {
+        name: 'social-nl',
+        type: 'Social',
+        language: 'nl',
+        description: 'Social Dutch',
+        varName: 'COGNITIVE_PROVIDER_WATSON_SOCIAL_WORKSPACE_NL'
     },
 ];
