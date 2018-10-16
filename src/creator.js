@@ -1,9 +1,9 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
-const { 
-    createWorkspaces, 
-    deleteWorkspaces, 
-    migratesWorkspaces, 
+const {
+    createWorkspaces,
+    deleteWorkspaces,
+    migratesWorkspaces,
     listAllWorkspacesNames,
 	  dumpWorkspaces
 } = require('iwac-utils');
@@ -18,7 +18,8 @@ const path = require('path');
 const lang = {
     'French': 'fr',
     'English': 'en',
-    'German': 'de'
+    'German': 'de',
+    'Dutch': 'nl'
 };
 
 program
