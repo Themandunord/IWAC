@@ -57,6 +57,35 @@ class ResourceInstancesService extends BaseService {
     return this.createRequest(parameters, _callback);
   }
 
+  listResourceKeys(params, callback) {
+    var _params = extend({}, params);
+    var _callback = (callback) ? callback : function () { };
+
+    var query = {
+      "guid": _params.guid,
+      "name": _params.name,
+      "resource_group_id": _params.resource_group_id,
+      "resource_id": _params.resource_id,
+      "limit": _params.limit,
+    };
+
+    var parameters = {
+      options: {
+        url: '/v2/resource_keys',
+        method: 'GET',
+        json: true,
+        qs: query,
+      },
+      defaultOptions: extend(true, {}, this._options, {
+        headers: extend(true, {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }, _params.headers),
+      }),
+    };
+    return this.createRequest(parameters, _callback);
+  }
+
   createResourceKey(params, callback) {
     var _params = extend({}, params);
     var _callback = (callback) ? callback : function () { };

@@ -470,10 +470,9 @@ program
 				if (err) {
 					return console.log(err);
 				} // else
-				service.createResourceKey({
-					name: resource.name + '_APIKEY',
-					source: resource.guid
-				}, (err, iam) => {
+				service.listResourceKeys({
+					resource_id: resource.resource_id,
+				}, (err, results) => {
 					console.log({
 						id: resource.id,
 						guid: resource.id,
@@ -483,7 +482,7 @@ program
 					  resource_group_id: resource.resource_group_id,
 						resource_group_crn: resource.resource_group_crn,
 						type: resource.type,
-						credentials: iam.credentials,
+						credentials: (results.resources || []).map(resourceKey => resourceKey.credentials ),
 					});
 				});
 			});
