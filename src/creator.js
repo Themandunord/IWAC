@@ -466,16 +466,25 @@ program
 			}
 
 			const service = new ResourceInstancesService(_options);
-			service.createInstance(params, (err, result) => {
+			service.createInstance(params, (err, resource) => {
 				if (err) {
 					return console.log(err);
 				} // else
-				service.createResourceBinding({
-					name: result.name + '_APIKEY',
-					source: result.guid
+				service.createResourceKey({
+					name: resource.name + '_APIKEY',
+					source: resource.guid
 				}, (err, iam) => {
-					console.log(err, iam);
-					console.log(result);
+					console.log({
+						id: resource.id,
+						guid: resource.id,
+						name: resource.name,
+						region_id: resource.region_id,
+						resource_plan_id: resource.resource_plan_id,
+					  resource_group_id: resource.resource_group_id,
+						resource_group_crn: resource.resource_group_crn,
+						type: resource.type,
+						credentials: iam.credentials,
+					});
 				});
 			});
 		} catch (error) {
