@@ -376,8 +376,8 @@ program
 				if (err) {
 					return console.log(err);
 				} // else
-				console.log(resources.map(resource => ({
-				  _id: resource._id,
+				console.log((resources && resources.resources || []).map(resource => ({
+				  id: resource.id,
 					name: resource.name,
 				})));
 			});
