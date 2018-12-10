@@ -355,10 +355,10 @@ program
   });
 
 program
-	.command('listResourceGroup')
+	.command('listResourceGroups')
 	.alias('lrg')
 	.option('-k, --apikey <apikey>', 'Specifies the platform api')
-	.description('List all resource group which can be used by the key')
+	.description('List all resource groups which can be used by the key')
 	.action(async (options) => {
 		const apikey = options.apikey;
 		const params = {};
@@ -391,7 +391,7 @@ program
 	.command('listResourceInstances')
 	.alias('lri')
 	.option('-k, --apikey <apikey>', 'Specifies the platform api')
-	.description('List all resource group which can be used by the key')
+	.description('List all resource instances which can be used by the key')
 	.action(async (options) => {
 		const apikey = options.apikey;
 		const _options = {};
@@ -425,14 +425,14 @@ program
 	});
 
 program
-	.command('createResourceInstances')
+	.command('createResourceInstance')
 	.alias('cri')
 	.option('-k, --apikey <apikey>', 'Specifies the platform api')
 	.option('-n, --name <name>', 'Specifies the name of the resource to create')
 	.option('-t, --target <target>', 'Specifies the target of the resource to create')
 	.option('-g, --resource_group <resource_group>', 'Specifies the resource group of the resource to create')
 	.option('-p, --resource_plan_id <resource_plan_id>', 'Specifies the plan id of the resource to create')
-	.description('List all resource group which can be used by the key')
+	.description('Create a resource instance')
 	.action(async (options) => {
 		const _options = {};
 		const apikey = options.apikey;

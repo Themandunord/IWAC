@@ -23,9 +23,9 @@ iwac create|c
 iwac remove|r
 iwac migrate|m
 iwac d|dump
-iwac listResourceGroup|lrg
+iwac listResourceGroups|lrg
 iwac listResourceInstances|lri
-iwac createResourceInstances|cri
+iwac createResourceInstance|cri
 ```
 
 iwac create options :
@@ -39,16 +39,16 @@ iwac create options :
 iwac dump options :
 - -o | --output-directory *Mandatory* Specifies where to create dump files
 
-iwac listResourceGroup options :
+iwac listResourceGroups options :
 - -k | --apikey Your ibm platform apikey
 
 iwac listResourceInstances options :
 - -k | --apikey Your ibm platform apikey
 
-iwac createResourceInstances options :
+iwac createResourceInstance options :
 - -k | --apikey Your ibm platform apikey
 - -n | --name <name> The name of the resource to create.
-- -t | --target <name> Tthe target of the resource to create (default: eu-de)
+- -t | --target <name> The target of the resource to create (default: eu-de)
 - -g | --resource_group <resource_group> The resource group of the resource to create
 - -p | --resource_plan_id <resource_plan_id> The plan id of the resource to create (default standard: d9c80e46-3195-11e6-a92b-54ee7514918e)
 
