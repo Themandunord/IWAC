@@ -429,9 +429,9 @@ program
 	.alias('cri')
 	.option('-k, --apikey <apikey>', 'Specifies the platform api')
 	.option('-n, --name <name>', 'Specifies the name of the resource to create')
-	.option('-t, --target <name>', 'Specifies the target of the resource to create')
-	.option('-g, --resource_group <name>', 'Specifies the resource group of the resource to create')
-	.option('-p, --resource_plan_id <name>', 'Specifies the plan id of the resource to create')
+	.option('-t, --target <target>', 'Specifies the target of the resource to create')
+	.option('-g, --resource_group <resource_group>', 'Specifies the resource group of the resource to create')
+	.option('-p, --resource_plan_id <resource_plan_id>', 'Specifies the plan id of the resource to create')
 	.description('List all resource group which can be used by the key')
 	.action(async (options) => {
 		const _options = {};
