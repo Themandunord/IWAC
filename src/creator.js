@@ -1,9 +1,9 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
-const { 
-    createWorkspaces, 
-    deleteWorkspaces, 
-    migratesWorkspaces, 
+const {
+    createWorkspaces,
+    deleteWorkspaces,
+    migratesWorkspaces,
     listAllWorkspacesNames,
 	  dumpWorkspaces
 } = require('iwac-utils');
@@ -18,12 +18,13 @@ const path = require('path');
 const lang = {
     'French': 'fr',
     'English': 'en',
-    'German': 'de'
+    'German': 'de',
+    'Dutch': 'nl'
 };
 
 program
     .description('CLI to create Watson Assistant Workspaces')
-    .version('1.1.4', '-v, --version');
+    .version('1.2.0', '-v, --version');
 
 program
     .command('create')
