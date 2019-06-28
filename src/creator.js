@@ -151,6 +151,8 @@ program
 	.option('--pwd-dest <pwdDest>', 'Destination Password')
 	.option('--user-dest <userDest>', 'Destination user')
 	.option('-a --all', 'Migrate all workspaces')
+	.option('-s --social', 'Migrate only social workspaces')
+	.option('--social-languages [socialLanguages]', 'Specify what social workspaces to migrate')
   .description('Migrate Watson Assistant Workspaces')
   .action(async (options) => {
     try {
@@ -163,6 +165,12 @@ program
 			const passwordDest = options.pwdDest;
 
 			const shouldMigrateAll = options.all;
+			const shouldMigrateSocial = options.social;
+      const socialLanguages = options.socialLanguages && options
+        .socialLanguages
+        .split(',')
+        .filter(l => lang[l])
+        .map(l => lang[l]);
 
 			const answersSource = {};
 
@@ -197,7 +205,11 @@ program
 			let selectedWorkspacesNames = [];
 			if (shouldMigrateAll) {
 				selectedWorkspacesNames = { names: workspacesNames };
-			} else {
+      } else if (shouldMigrateSocial) {
+        selectedWorkspacesNames = {
+          names: workspacesNames.filter(wk => socialLanguages ? socialLanguages.some(sl => wk === `social-${sl}`) : wk.startsWith('social-')),
+        };
+      } else {
 				selectedWorkspacesNames = await prompt(questions.migrate(workspacesNames));
 			}
 
