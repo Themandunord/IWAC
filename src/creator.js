@@ -251,7 +251,7 @@ program
 			});
 
 			if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
-				console.log('Your workspace(s) were successfully migrated :) \nhere is/are the new workspace(s) :\n', watsonWks);
+				console.log(watsonWks);
 			} else {
 				console.error('Oops, a problem occurred ! No workspaces were returned :/');
 			}
