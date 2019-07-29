@@ -251,7 +251,7 @@ program
 			});
 
 			if (watsonWks && !_.isEmpty(watsonWks) && !watsonWks.every(_.isEmpty)) {
-				console.log(watsonWks);
+				console.log(JSON.stringify(watsonWks));
 			} else {
 				console.error('Oops, a problem occurred ! No workspaces were returned :/');
 			}
