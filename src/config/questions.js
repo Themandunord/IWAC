@@ -102,6 +102,60 @@ module.exports = {
 			},
 		}
 	],
+	iam: {
+		apikey: [
+			{
+				type: 'input',
+				name: 'apikey',
+				message: 'Enter ibm platform apikey :',
+				validate: function (input) {
+					return input && input.length > 0;
+				},
+			}
+		],
+	},
+	createResourceInstance: {
+		name: [
+			{
+				type: 'input',
+				name: 'name',
+				message: 'Enter the name of the resource instance to create :',
+				validate: function (input) {
+					return input && input.length > 0;
+				},
+			}
+		],
+		target: [
+			{
+				type: 'input',
+				name: 'target',
+				message: 'Enter the target of the resource instance to create :',
+				validate: function (input) {
+					return input && input.length > 0;
+				},
+			}
+		],
+		resource_group: [
+			{
+				type: 'input',
+				name: 'resource_group',
+				message: 'Enter the resource group of the resource instance to create :',
+				validate: function (input) {
+					return input && input.length > 0;
+				},
+			}
+		],
+		resource_plan_id: [
+			{
+				type: 'input',
+				name: 'resource_group',
+				message: 'Enter the plan id of the resource instance to create :',
+				validate: function (input) {
+					return input && input.length > 0;
+				},
+			}
+		],
+	},
 	listWorkspaces: [
 		{
 			type: 'input',

@@ -7,7 +7,8 @@ const {
     listAllWorkspacesNames,
 	  dumpWorkspaces
 } = require('iwac-utils');
-
+const ResourceGroupsService = require('./ResourceGroupsService');
+const ResourceInstancesService = require('./ResourceInstancesService');
 const questions = require('./config/questions');
 const workspaces = require('./config/wks');
 const yaml = require('js-yaml');
@@ -365,6 +366,143 @@ program
 		}
   });
 
+program
+	.command('listResourceGroups')
+	.alias('lrg')
+	.option('-k, --apikey <apikey>', 'Specifies the platform api')
+	.description('List all resource groups which can be used by the key')
+	.action(async (options) => {
+		const apikey = options.apikey;
+		const params = {};
+		try {
+
+			if (apikey) {
+				params.iam_apikey = apikey;
+			} else {
+				const answer = await prompt(questions.iam.apikey);
+				params.iam_apikey = answer.apikey;
+			}
+
+			const service = new ResourceGroupsService(params);
+			service.list({}, (err, resources) => {
+				if (err) {
+					return console.log(err);
+				} // else
+				console.log((resources && resources.resources || []).map(resource => ({
+				  id: resource.id,
+					name: resource.name,
+				})));
+			});
+		} catch (error) {
+			console.error('An error occurred');
+			console.error(error);
+		}
+	});
+
+program
+	.command('listResourceInstances')
+	.alias('lri')
+	.option('-k, --apikey <apikey>', 'Specifies the platform api')
+	.description('List all resource instances which can be used by the key')
+	.action(async (options) => {
+		const apikey = options.apikey;
+		const _options = {};
+		try {
+
+			if (apikey) {
+				_options.iam_apikey = apikey;
+			} else {
+				const answer = await prompt(questions.iam.apikey);
+				_options.iam_apikey = answer.apikey;
+			}
+
+			const service = new ResourceInstancesService(_options);
+			service.list({}, (err, results) => {
+				if (err) {
+					return console.log(err);
+				} // else
+				console.log((results.resources || []).map(instance => ({
+					id: instance.id,
+					guid: instance.guid,
+					name: instance.name,
+					resource_plan_id: instance.resource_plan_id,
+					resource_group_id: instance.resource_group_id,
+					resource_group_crn: instance.resource_group_crn,
+				})));
+			});
+		} catch (error) {
+			console.error('An error occurred');
+			console.error(error);
+		}
+	});
+
+program
+	.command('createResourceInstance')
+	.alias('cri')
+	.option('-k, --apikey <apikey>', 'Specifies the platform api')
+	.option('-n, --name <name>', 'Specifies the name of the resource to create')
+	.option('-t, --target <target>', 'Specifies the target of the resource to create')
+	.option('-g, --resource_group <resource_group>', 'Specifies the resource group of the resource to create')
+	.option('-p, --resource_plan_id <resource_plan_id>', 'Specifies the plan id of the resource to create')
+	.description('Create a resource instance')
+	.action(async (options) => {
+		const _options = {};
+		const apikey = options.apikey;
+
+		const name = options.name;
+		const target = options.target || 'eu-de';
+		const resource_group = options.resource_group;
+		const resource_plan_id = options.resource_plan_id || "d9c80e46-3195-11e6-a92b-54ee7514918e";
+		const params = {
+			name,
+			target,
+			resource_group,
+			resource_plan_id
+		};
+		try {
+			if (apikey) {
+				_options.iam_apikey = apikey;
+			} else {
+				const answer = await prompt(questions.iam.apikey);
+				_options.iam_apikey = answer.apikey;
+			}
+
+			if (!name) {
+				const answer = await prompt(questions.createResourceInstance.name);
+				params.name = answer.name;
+			}
+
+			if (!resource_group) {
+				const answer = await prompt(questions.createResourceInstance.resource_group);
+				params.resource_group = answer.resource_group;
+			}
+
+			const service = new ResourceInstancesService(_options);
+			service.createInstance(params, (err, resource) => {
+				if (err) {
+					return console.log(err);
+				} // else
+				service.listResourceKeys({
+					resource_id: resource.resource_id,
+				}, (err, results) => {
+					console.log({
+						id: resource.id,
+						guid: resource.id,
+						name: resource.name,
+						region_id: resource.region_id,
+						resource_plan_id: resource.resource_plan_id,
+					  resource_group_id: resource.resource_group_id,
+						resource_group_crn: resource.resource_group_crn,
+						type: resource.type,
+						credentials: (results.resources || []).map(resourceKey => resourceKey.credentials ),
+					});
+				});
+			});
+		} catch (error) {
+			console.error('An error occurred');
+			console.error(error);
+		}
+	});
 
 program.parse(process.argv);
 
